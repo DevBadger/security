@@ -3,7 +3,7 @@ package com.devbadger.security.security;
 import com.devbadger.model.AuthUser;
 import com.devbadger.security.model.JwtAuthenticationToken;
 import com.devbadger.security.model.JwtUserDetails;
-import com.devbadger.security.service.APPSecurityValidationService;
+import com.devbadger.security.service.AppSecurityValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -20,7 +20,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
 
 
     @Autowired
-    private APPSecurityValidationService service;
+    private AppSecurityValidationService service;
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {

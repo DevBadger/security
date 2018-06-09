@@ -1,5 +1,7 @@
 package com.devbadger.security
 
+import com.devbadger.security.exception.SecurityAuthorizationException
+import com.devbadger.security.service.SecurityValidationServiceImpl
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -40,19 +42,19 @@ class SecurityValidationServiceImplSpec extends Specification{
                 notBefore: notBefore
         )
 
-        def flexUser = service.validateAndReturnFlexUser(jwt)
+        def authUser = service.validateAndReturnFlexUser(jwt)
 
         then:
         assert claims.entrySet().size() == 5
         println "Claims count " + claims.entrySet().size()
 
-        assert flexUser.sessionId == claims.get("sessionId")
+        assert authUser.sessionId == claims.get("sessionId")
         println claims.get("sessionId")
 
-        assert flexUser.sourceId == claims.get("sourceId")
+        assert authUser.sourceId == claims.get("sourceId")
         println claims.get("sourceId")
 
-        assert flexUser.userId == claims.get("userId")
+        assert authUser.userId == claims.get("userId")
         println claims.get("userId")
 
         where:
@@ -104,6 +106,6 @@ class SecurityValidationServiceImplSpec extends Specification{
 
         where:
         num | sessionId        | sourceId | userId | secret       | expiration | notBefore
-        1   | "123-123-123-123"| "667"   | "8048"| "test-secret"| 864_000_000| 864_000_000
+        1   | "123-123-123-123"| "667"    | "8048" | "test-secret"| 864_000_000| 864_000_000
     }
 }

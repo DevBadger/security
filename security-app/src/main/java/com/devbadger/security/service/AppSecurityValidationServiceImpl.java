@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class APPSecurityValidationServiceImpl implements APPSecurityValidationService {
+public class AppSecurityValidationServiceImpl implements AppSecurityValidationService {
 
     @Value("${security.jwt.secret}")
     private String secret;

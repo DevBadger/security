@@ -12,7 +12,7 @@ configurations {
 
 dependencies {
     // Internal
-    compile "devbadger:security-common:${version}"
+    compile "devbadger:security-auth:${version}"
 
     // 3rd Party
     compile 'io.jsonwebtoken:jjwt'
