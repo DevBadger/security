@@ -23,6 +23,3 @@
 hs_err_pid*
 /.idea/
 .gradle/
-security-app/src/
-security-auth/src/
-security-common/src/
