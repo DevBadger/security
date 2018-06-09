@@ -1,4 +1,4 @@
-include 'security-app'
-include 'security-auth'
-include 'security-common'
-
+rootProject.name = 'security'
+include ':security-common'
+include ':security-auth'
+include ':security-app'

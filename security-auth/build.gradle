@@ -1,16 +1,17 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'org.springframework.boot'
 
-group 'devbadger'
-version 'unspecified'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+bootRepackage {
+    enabled = false
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    //Internal
+    compile "devbadger:security-common:${version}"
+
+    //3rd Party
+    compile 'io.jsonwebtoken:jjwt'
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-security"
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

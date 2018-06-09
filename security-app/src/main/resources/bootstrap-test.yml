@@ -1,0 +1,16 @@
+server.port: 11552
+
+spring.cloud.config.enabled: false
+
+eureka.client.enabled: false
+
+security:
+  jwt:
+    secret: testSecret
+    expiration: 315569260000 # 10 year
+    notBefore: 315569260000 #10 year
+    #Below values used for testing reference
+    sessionId: testSessionId
+    sourceId: testSourceId
+    userId: testUserId
+    testJWT: eyJhbGciOiJIUzUxMiJ9.eyJzZXNzaW9uSWQiOiJ0ZXN0U2Vzc2lvbklkIiwic3RvcmVJZCI6InRlc3RTdG9yZUlkIiwicmVwSWQiOiJ0ZXN0UmVwSWQifQ.j8FK9HPlimfqAeh_V36Iiv-UEu0qBjhAcr_Qlui58nUR-50U_cm-X-2Y9K5YgTUhAb34KWPNzNPIci4mkPr1Xw

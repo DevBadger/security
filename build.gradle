@@ -21,6 +21,7 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'net.researchgate.release'
+    apply plugin: 'maven-publish'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -36,8 +37,6 @@ subprojects {
         }
 
         dependencies {
-
-            // External dependencies
             dependency 'io.jsonwebtoken:jjwt:0.9.0'
             dependency 'com.google.guava:guava:23.0'
             dependency 'ch.qos.logback:logback-core:1.2.3'
@@ -66,6 +65,22 @@ subprojects {
         }
     }
 
+    /**
+     * This is a workaround because this research gate release plugin does not support
+     * multi-project sibling dependency build order.
+     *
+     * The workaround is to release each artifact independently:
+     *
+     * cd ../security/security-common && ./gradlew release -Prelease.useAutomaticVersion=true
+     * cd ../security/security-auth && ./gradlew release -Prelease.useAutomaticVersion=true
+     * cd ../security/security-app  && ./gradlew release -Prelease.useAutomaticVersion=true
+     *
+     * Note: failOnSnapshotDependencies = false set to false which ignores versions, so as subprojects are built, such as,
+     *      common the gradle.properties version is incremented.  We need to ignore, we're releasing everything
+     *      at once. The following is a reminder of this directive.
+     *          !!WARNING!! Snapshot dependencies detected:
+     *
+     */
     release {
         revertOnFail = true
         tagTemplate = '$name-$version'

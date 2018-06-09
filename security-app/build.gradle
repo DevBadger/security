@@ -1,16 +1,58 @@
-plugins {
-    id 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'docker'
+apply plugin: 'maven-publish'
+
+jar {
+    baseName = 'security'
 }
 
-group 'devbadger'
-version 'unspecified'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+configurations {
+    providedRuntime
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // Internal
+    compile "devbadger:security-common:${version}"
+
+    // 3rd Party
+    compile 'io.jsonwebtoken:jjwt'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka'
+    compile 'org.springframework.cloud:spring-cloud-starter-config'
+    compile 'org.aspectj:aspectjweaver'
+
+    // Internal test dependency
+//    testCompile "devbadger:security-authorization:${version}"
+
+    // 3rd Party test dependency
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
+
+task image(type: Docker, dependsOn: build ) {
+    applicationName = jar.baseName
+    dockerfile = file('Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into "${stageDir}/target"
+
+        }
+    }
+}
+
+task publishImage(type: Docker, dependsOn: build ) {
+    applicationName = jar.baseName
+    push = true
+    dockerfile = file('Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into "${stageDir}/target"
+
+        }
+    }
+}
+
+afterReleaseBuild.dependsOn publishImage
