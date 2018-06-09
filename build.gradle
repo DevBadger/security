@@ -1,0 +1,79 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.11.RELEASE'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE'
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+        classpath 'net.researchgate:gradle-release:2.6.0'
+    }
+}
+
+allprojects  {
+    group = 'devbadger'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'groovy'
+    apply plugin: 'jacoco'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'net.researchgate.release'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Edgware.SR3'
+        }
+
+        dependencies {
+
+            // External dependencies
+            dependency 'io.jsonwebtoken:jjwt:0.9.0'
+            dependency 'com.google.guava:guava:23.0'
+            dependency 'ch.qos.logback:logback-core:1.2.3'
+            dependency 'org.aspectj:aspectjweaver:1.8.13'
+        }
+
+        testCompile {
+            dependencies {
+                // Integration test dependencies
+                dependency 'org.spockframework:spock-spring:1.1-groovy-2.4'
+
+            }
+        }
+    }
+
+    dependencies {
+        testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+        testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+
+    release {
+        revertOnFail = true
+        tagTemplate = '$name-$version'
+        failOnSnapshotDependencies = false
+        buildTasks = ['clean', 'build', 'install']
+        git {
+            requireBranch = ''
+            commitVersionFileOnly = false
+        }
+    }
+}
